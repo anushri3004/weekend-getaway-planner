@@ -4,7 +4,7 @@ import dotenv from "dotenv";
 import path from "path";
 import { fileURLToPath } from "url";
 import { initializeVectorStore } from "./langchain/vectorStore.js";
-import { getWeekendRecommendation } from "./langchain/chains.js";
+import { handleChatQuery } from "./langchain/chains.js";
 
 // Get directory path
 const __filename = fileURLToPath(import.meta.url);
@@ -52,7 +52,7 @@ app.get("/api/health", (req, res) => {
 // Main chat endpoint
 app.post("/api/chat", async (req, res) => {
   try {
-    const { message } = req.body;
+    const { message, userPreferences, context } = req.body;
 
     if (!message) {
       return res.status(400).json({ error: "Message is required" });
@@ -65,12 +65,22 @@ app.post("/api/chat", async (req, res) => {
     }
 
     console.log("📨 Received message:", message);
+    console.log("📋 User preferences:", userPreferences);
+    console.log("🔄 Context:", context);
 
-    // Get AI recommendation
-    const response = await getWeekendRecommendation(message);
+    // Build context object for the chain
+    const fullContext = {
+      userPreferences: userPreferences || {},
+      selectedDestination: context?.selectedDestination || null,
+      hasSeenItinerary: context?.hasSeenItinerary || false
+    };
 
+    // Use the router to handle the query (returns comparison, detailed, or chat mode)
+    const response = await handleChatQuery(message, fullContext);
+
+    // Return response directly (it already has mode and data)
     res.json({
-      response,
+      ...response,
       timestamp: new Date().toISOString(),
     });
   } catch (error) {

@@ -1,11 +1,26 @@
 import { useState, useEffect, useRef } from 'react'
-import MessageBubble from './MessageBubble'
-import LoadingState from './LoadingState'
+import PreferenceWizard from './PreferenceWizard'
+import ComparisonView from './ComparisonView'
+import DetailedItineraryView from './DetailedItineraryView'
 
-function ChatInterface({ initialQuery }) {
+function ChatInterface() {
   const [messages, setMessages] = useState([])
-  const [input, setInput] = useState('')
   const [isLoading, setIsLoading] = useState(false)
+  const [showWizard, setShowWizard] = useState(true)
+
+  // View mode state
+  const [viewMode, setViewMode] = useState(null) // null | 'comparison' | 'detailed'
+  const [comparisonData, setComparisonData] = useState(null)
+  const [detailedItinerary, setDetailedItinerary] = useState(null)
+
+  // Context state
+  const [userPreferences, setUserPreferences] = useState(null)
+  const [selectedDestination, setSelectedDestination] = useState(null)
+
+  // Chat state (for detailed view)
+  const [destinationChatMessages, setDestinationChatMessages] = useState([])
+  const [isLoadingChat, setIsLoadingChat] = useState(false)
+
   const messagesEndRef = useRef(null)
 
   const scrollToBottom = () => {
@@ -16,33 +31,44 @@ function ChatInterface({ initialQuery }) {
     scrollToBottom()
   }, [messages])
 
-  useEffect(() => {
-    if (initialQuery) {
-      setInput(initialQuery)
-    }
-  }, [initialQuery])
+  // Handle wizard completion
+  const handleWizardComplete = async (query, preferences) => {
+    console.log('Wizard completed:', { query, preferences })
+    setUserPreferences(preferences)
+    setShowWizard(false)
 
-  const handleSubmit = async (e) => {
-    e.preventDefault()
-    if (!input.trim() || isLoading) return
-
+    // Add user message to chat
     const userMessage = {
-      text: input,
+      text: query,
       isUser: true,
       timestamp: new Date().toISOString()
     }
-
     setMessages(prev => [...prev, userMessage])
-    setInput('')
-    setIsLoading(true)
+
+    // Send to backend
+    await handleSendMessage(query, preferences)
+  }
+
+  // Send message to backend
+  const handleSendMessage = async (message, preferences = userPreferences, isChat = false) => {
+    if (isChat) {
+      setIsLoadingChat(true)
+    } else {
+      setIsLoading(true)
+    }
 
     try {
       const response = await fetch('/api/chat', {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ message: input }),
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          message,
+          userPreferences: preferences || {},
+          context: {
+            selectedDestination: selectedDestination,
+            hasSeenItinerary: viewMode === 'detailed'
+          }
+        })
       })
 
       if (!response.ok) {
@@ -50,76 +76,179 @@ function ChatInterface({ initialQuery }) {
       }
 
       const data = await response.json()
+      console.log('Backend response:', data)
 
-      const aiMessage = {
-        text: data.response,
-        isUser: false,
-        timestamp: data.timestamp
+      // Handle based on mode
+      if (data.mode === 'comparison') {
+        setViewMode('comparison')
+        setComparisonData(data)
+
+        const aiMessage = {
+          text: data.message || 'Here are your top destination matches!',
+          isUser: false,
+          timestamp: data.timestamp,
+          type: 'comparison'
+        }
+        setMessages(prev => [...prev, aiMessage])
+
+      } else if (data.mode === 'detailed') {
+        setViewMode('detailed')
+        setDetailedItinerary(data)
+        setSelectedDestination(data.destination)
+        setDestinationChatMessages([]) // Clear chat when new destination selected
+
+        const aiMessage = {
+          text: `Here's your complete ${data.destination} itinerary!`,
+          isUser: false,
+          timestamp: data.timestamp,
+          type: 'detailed',
+          destination: data.destination
+        }
+        setMessages(prev => [...prev, aiMessage])
+
+      } else if (data.mode === 'chat') {
+        // Contextual chat response
+        setDestinationChatMessages(prev => [
+          ...prev,
+          { role: 'user', content: message },
+          { role: 'assistant', content: data.message }
+        ])
       }
-
-      setMessages(prev => [...prev, aiMessage])
     } catch (error) {
-      console.error('Error:', error)
-      const errorMessage = {
-        text: 'Sorry, I encountered an error. Please try again.',
-        isUser: false,
-        timestamp: new Date().toISOString()
+      console.error('Error sending message:', error)
+
+      if (isChat) {
+        setDestinationChatMessages(prev => [
+          ...prev,
+          { role: 'user', content: message },
+          { role: 'assistant', content: 'Sorry, something went wrong. Please try again.' }
+        ])
+      } else {
+        const errorMessage = {
+          text: 'Sorry, something went wrong. Please try again.',
+          isUser: false,
+          timestamp: new Date().toISOString(),
+          type: 'error'
+        }
+        setMessages(prev => [...prev, errorMessage])
       }
-      setMessages(prev => [...prev, errorMessage])
     } finally {
-      setIsLoading(false)
+      if (isChat) {
+        setIsLoadingChat(false)
+      } else {
+        setIsLoading(false)
+      }
     }
+  }
+
+  // Handle destination selection from comparison
+  const handleDestinationSelect = async (destinationName) => {
+    console.log('Destination selected:', destinationName)
+    const message = `Choose ${destinationName}`
+
+    // Add user message
+    const userMessage = {
+      text: message,
+      isUser: true,
+      timestamp: new Date().toISOString()
+    }
+    setMessages(prev => [...prev, userMessage])
+
+    // Send to backend
+    await handleSendMessage(message, userPreferences, false)
+  }
+
+  // Handle back to comparison
+  const handleBackToComparison = () => {
+    console.log('Back to comparison')
+    setViewMode('comparison')
+    setDetailedItinerary(null)
+    setSelectedDestination(null)
+    setDestinationChatMessages([])
+  }
+
+  // Handle chat message in detailed view
+  const handleDestinationChatMessage = async (message) => {
+    console.log('Chat message:', message)
+    await handleSendMessage(message, userPreferences, true)
+  }
+
+  // Handle refine search
+  const handleRefineSearch = () => {
+    console.log('Refine search clicked')
+    setShowWizard(true)
+    setViewMode(null)
+    setComparisonData(null)
+    setDetailedItinerary(null)
+    setSelectedDestination(null)
+    setDestinationChatMessages([])
   }
 
   return (
     <div className="flex-1 flex flex-col h-full">
-      {/* Messages Area */}
-      <div className="flex-1 overflow-y-auto p-6">
-        {messages.length === 0 ? (
+      {/* Wizard Modal */}
+      {messages.length === 0 && showWizard && (
+        <PreferenceWizard
+          onComplete={handleWizardComplete}
+        />
+      )}
+
+      {/* Wizard Modal - Refinement */}
+      {messages.length > 0 && showWizard && (
+        <PreferenceWizard
+          onComplete={handleWizardComplete}
+        />
+      )}
+
+
+      {/* Main Content Area */}
+      <div className="flex-1 overflow-y-auto">
+        {/* Comparison View */}
+        {viewMode === 'comparison' && comparisonData && !showWizard && (
+          <ComparisonView
+            destinations={comparisonData.destinations}
+            onDestinationSelect={handleDestinationSelect}
+            onRefine={handleRefineSearch}
+          />
+        )}
+
+        {/* Loading State */}
+        {isLoading && (
+          <div className="flex items-center justify-center p-12">
+            <div className="text-center">
+              <div className="inline-block animate-spin rounded-full h-12 w-12 border-4 border-primary border-t-transparent mb-4"></div>
+              <p className="text-text-secondary font-medium">Finding your perfect destinations...</p>
+            </div>
+          </div>
+        )}
+
+        {/* Detailed Itinerary View */}
+        {viewMode === 'detailed' && detailedItinerary && !isLoading && !showWizard && (
+          <DetailedItineraryView
+            itinerary={detailedItinerary}
+            onBack={handleBackToComparison}
+            onChatMessage={handleDestinationChatMessage}
+            chatMessages={destinationChatMessages}
+            isLoadingChat={isLoadingChat}
+          />
+        )}
+
+        {/* Empty State */}
+        {messages.length === 0 && !showWizard && !isLoading && (
           <div className="flex items-center justify-center h-full">
             <div className="text-center max-w-lg px-4">
-              <div className="text-6xl md:text-7xl mb-6">💬</div>
-              <h2 className="text-2xl md:text-3xl font-bold text-dark-gray mb-3">
+              <div className="text-6xl md:text-7xl mb-6" role="img" aria-label="chat">💬</div>
+              <h2 className="text-2xl md:text-3xl font-bold text-text-primary mb-3">
                 Ready to plan your getaway?
               </h2>
-              <p className="text-gray-600 mb-6">
+              <p className="text-text-secondary mb-6">
                 Tell me about your preferences and I'll create the perfect weekend itinerary for you!
               </p>
             </div>
           </div>
-        ) : (
-          <>
-            {messages.map((msg, index) => (
-              <MessageBubble key={index} message={msg} isUser={msg.isUser} />
-            ))}
-            {isLoading && <LoadingState />}
-          </>
         )}
-        <div ref={messagesEndRef} />
       </div>
 
-      {/* Input Area */}
-      <div className="border-t border-gray-200 bg-white p-6 shadow-lg">
-        <form onSubmit={handleSubmit} className="max-w-4xl mx-auto">
-          <div className="flex space-x-4">
-            <input
-              type="text"
-              value={input}
-              onChange={(e) => setInput(e.target.value)}
-              placeholder="Ask me anything... ✨"
-              className="flex-1 px-6 py-4 border-2 border-gray-300 rounded-full focus:outline-none focus:border-coral focus:ring-4 focus:ring-coral/20 transition-all text-dark-gray placeholder-gray-400"
-              disabled={isLoading}
-            />
-            <button
-              type="submit"
-              disabled={isLoading || !input.trim()}
-              className="px-8 py-4 bg-sunset-gradient text-white rounded-full font-semibold hover:shadow-lg disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-300 hover:scale-105"
-            >
-              {isLoading ? '✈️ Planning...' : '🚀 Send'}
-            </button>
-          </div>
-        </form>
-      </div>
     </div>
   )
 }

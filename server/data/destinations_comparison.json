@@ -1,0 +1,164 @@
+{
+  "destinations": [
+    {
+      "name": "Gokarna",
+      "tagline": "Peaceful beach vibe • Offbeat gem",
+      "matchCriteria": {
+        "vibes": ["Beach Bliss", "Peaceful Retreat"],
+        "budgetRange": [20000, 35000],
+        "departureCities": ["Mumbai", "Bangalore", "Pune"],
+        "interests": ["Foodie", "Romantic Sunsets", "Nature", "Instagram-worthy"]
+      },
+      "comparisonData": {
+        "whyPerfect": "Gokarna offers quiet beaches away from tourist crowds, perfect for couples seeking authentic coastal experiences. The relaxed bohemian vibe and stunning sunsets match your peaceful beach preference.",
+        "pros": [
+          "Quiet, less crowded beaches compared to Goa",
+          "Amazing seafood cafes with sunset views",
+          "Easy mix of relaxation and light adventure (beach hopping)",
+          "Offbeat destination with authentic local culture"
+        ],
+        "budget": "₹32,000 for 2 days",
+        "travelTime": {
+          "Mumbai": "12 hours (train or bus)",
+          "Delhi": "36 hours (flight recommended)",
+          "Bangalore": "9 hours (overnight bus or drive)",
+          "Pune": "14 hours (train or bus)",
+          "Hyderabad": "16 hours (train)",
+          "Chennai": "18 hours (train)"
+        },
+        "bestFor": "Couples seeking relaxation + authentic beach experiences",
+        "hiddenGem": "Paradise Beach - accessible only by trek or boat, most secluded beach",
+        "bestTimeToVisit": "October to March (pleasant weather)",
+        "quickItineraryPreview": "Day 1: Beach hopping (Om, Half Moon, Paradise) + sunset at Paradise Beach • Day 2: Kudle Beach relaxation + Mahabaleshwar Temple visit"
+      }
+    },
+    {
+      "name": "Coorg",
+      "tagline": "Misty mountains • Coffee paradise",
+      "matchCriteria": {
+        "vibes": ["Mountain Escape", "Peaceful Retreat"],
+        "budgetRange": [25000, 40000],
+        "departureCities": ["Bangalore", "Mumbai", "Hyderabad", "Chennai"],
+        "interests": ["Nature", "Foodie", "Romantic Sunsets"]
+      },
+      "comparisonData": {
+        "whyPerfect": "Coorg's lush coffee plantations, misty hills, and cool climate create a romantic mountain escape. Perfect for couples who love nature, great food, and peaceful mornings with coffee amidst greenery.",
+        "pros": [
+          "Beautiful coffee plantations and scenic drives",
+          "Pleasant weather year-round (cool and misty)",
+          "Excellent Coorgi cuisine (pork curry, bamboo shoot curry)",
+          "Waterfalls, viewpoints, and nature trails for light trekking"
+        ],
+        "budget": "₹35,000 for 3 days",
+        "travelTime": {
+          "Mumbai": "20 hours (flight to Bangalore + 6hr drive)",
+          "Delhi": "24 hours (flight to Bangalore + 6hr drive)",
+          "Bangalore": "5-6 hours (scenic drive)",
+          "Pune": "18 hours (train to Bangalore + drive)",
+          "Hyderabad": "12 hours (drive or bus)",
+          "Chennai": "10 hours (drive)"
+        },
+        "bestFor": "Nature lovers seeking mountain peace + great food",
+        "hiddenGem": "Chelavara Falls - less crowded, stunning especially during monsoon season",
+        "bestTimeToVisit": "October to March (pleasant), June-August (monsoon - lush green)",
+        "quickItineraryPreview": "Day 1: Coffee plantation tour + Abbey Falls • Day 2: Raja's Seat sunrise + Dubare Elephant Camp • Day 3: Talacauvery temple + scenic drive"
+      }
+    },
+    {
+      "name": "Pondicherry",
+      "tagline": "French charm • Beach meets culture",
+      "matchCriteria": {
+        "vibes": ["Beach Bliss", "Adventure Rush"],
+        "budgetRange": [25000, 38000],
+        "departureCities": ["Chennai", "Bangalore", "Hyderabad"],
+        "interests": ["Culture", "Foodie", "Instagram-worthy", "Romantic Sunsets"]
+      },
+      "comparisonData": {
+        "whyPerfect": "Pondicherry blends French colonial architecture with Tamil culture, offering unique charm. Perfect for couples who want beach relaxation mixed with cafe culture, colorful streets, and romantic French vibes.",
+        "pros": [
+          "Unique French Quarter with colorful colonial buildings",
+          "Excellent cafes, bakeries, and French restaurants",
+          "Auroville - spiritual community worth visiting",
+          "Beach promenade, water sports, and Serenity Beach"
+        ],
+        "budget": "₹30,000 for 2 days",
+        "travelTime": {
+          "Mumbai": "24 hours (flight to Chennai + 3hr drive)",
+          "Delhi": "26 hours (flight to Chennai + 3hr drive)",
+          "Bangalore": "5 hours (road)",
+          "Pune": "20 hours (train to Chennai + drive)",
+          "Hyderabad": "10 hours (road or train)",
+          "Chennai": "3 hours (road)"
+        },
+        "bestFor": "Culture + beach combo seekers",
+        "hiddenGem": "Paradise Beach - boat ride required, pristine and quiet, perfect for couples",
+        "bestTimeToVisit": "October to March (pleasant weather)",
+        "quickItineraryPreview": "Day 1: French Quarter walk + Rock Beach sunset • Day 2: Auroville + Paradise Beach boat trip + Serenity Beach"
+      }
+    },
+    {
+      "name": "Udaipur",
+      "tagline": "City of Lakes • Royal romance",
+      "matchCriteria": {
+        "vibes": ["Peaceful Retreat", "Adventure Rush"],
+        "budgetRange": [35000, 50000],
+        "departureCities": ["Delhi", "Mumbai", "Pune"],
+        "interests": ["Culture", "Romantic Sunsets", "Instagram-worthy", "Foodie"]
+      },
+      "comparisonData": {
+        "whyPerfect": "Udaipur is India's most romantic city with stunning palaces, serene lakes, and royal heritage. Perfect for couples seeking a luxurious, culturally rich weekend with breathtaking architecture and sunset boat rides.",
+        "pros": [
+          "Stunning City Palace and Lake Palace views",
+          "Romantic boat rides on Lake Pichola at sunset",
+          "Rich Rajasthani culture, food, and hospitality",
+          "Instagram-worthy at every corner"
+        ],
+        "budget": "₹45,000 for 3 days",
+        "travelTime": {
+          "Mumbai": "16 hours (flight 1.5hr or train overnight)",
+          "Delhi": "12 hours (flight 1.5hr or train overnight)",
+          "Bangalore": "Not recommended (too far)",
+          "Pune": "18 hours (flight via Mumbai/Delhi)",
+          "Hyderabad": "Not recommended (too far)",
+          "Chennai": "Not recommended (too far)"
+        },
+        "bestFor": "Couples seeking royal luxury and cultural immersion",
+        "hiddenGem": "Sajjangarh Monsoon Palace - panoramic sunset views of entire city and surrounding lakes",
+        "bestTimeToVisit": "October to March (pleasant), avoid summer (very hot)",
+        "quickItineraryPreview": "Day 1: City Palace tour + Lake Pichola boat ride • Day 2: Jag Mandir + local markets + rooftop dinner • Day 3: Sajjangarh Palace sunset"
+      }
+    },
+    {
+      "name": "Rishikesh",
+      "tagline": "Adventure capital • Spiritual vibes",
+      "matchCriteria": {
+        "vibes": ["Adventure Rush", "Peaceful Retreat"],
+        "budgetRange": [22000, 35000],
+        "departureCities": ["Delhi", "Mumbai", "Pune"],
+        "interests": ["Nature", "Water Sports", "Wellness", "Romantic Sunsets"]
+      },
+      "comparisonData": {
+        "whyPerfect": "Rishikesh combines adrenaline-pumping adventures with serene spiritual experiences. Perfect for couples who want river rafting, camping under stars, yoga, and beautiful Ganges sunsets all in one trip.",
+        "pros": [
+          "Thrilling river rafting on the Ganges",
+          "Camping by riverside under starry skies",
+          "Yoga capital of the world - authentic wellness experiences",
+          "Beautiful temples, ghats, and sunset ceremonies"
+        ],
+        "budget": "₹28,000 for 2 days",
+        "travelTime": {
+          "Mumbai": "32 hours (flight to Dehradun + 1hr drive)",
+          "Delhi": "6 hours (drive or train)",
+          "Bangalore": "Not recommended (too far)",
+          "Pune": "30 hours (flight to Delhi + drive)",
+          "Hyderabad": "Not recommended (too far)",
+          "Chennai": "Not recommended (too far)"
+        },
+        "bestFor": "Adventure couples + spiritual seekers",
+        "hiddenGem": "Neer Garh Waterfall - 2km trek through forest, perfect for romantic picnic",
+        "bestTimeToVisit": "March to May (rafting season), September to November (pleasant)",
+        "quickItineraryPreview": "Day 1: River rafting + beach camping • Day 2: Beatles Ashram + Lakshman Jhula + Ganga Aarti at sunset"
+      }
+    }
+  ]
+}
