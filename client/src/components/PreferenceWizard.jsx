@@ -62,12 +62,12 @@ function PreferenceWizard({ onComplete }) {
       case 2:
         return wizardData.departureCity !== null
       case 3:
-        return wizardData.budget >= 20000 && wizardData.budget <= 50000
+        return wizardData.budget >= 20000 && wizardData.budget <= 100000
       case 4:
         return wizardData.startDate && wizardData.endDate &&
                new Date(wizardData.endDate) > new Date(wizardData.startDate)
       case 5:
-        return true // Interests are optional
+        return wizardData.interests.length > 0 // Interests are now mandatory
       default:
         return false
     }
@@ -115,9 +115,9 @@ function PreferenceWizard({ onComplete }) {
 
   return (
     <div className="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4" role="dialog" aria-labelledby="wizard-title">
-      <div className="bg-surface rounded-2xl shadow-2xl max-w-4xl w-full max-h-[90vh] overflow-hidden flex flex-col animate-fadeIn border-2 border-neutral-light">
+      <div className="bg-surface rounded-2xl shadow-2xl w-full max-w-4xl h-[700px] flex flex-col animate-fadeIn border-2 border-neutral-light overflow-hidden">
         {/* Header */}
-        <div className="bg-warm-gradient p-6 text-white">
+        <div className="bg-warm-gradient p-6 text-white flex-shrink-0 rounded-t-2xl">
           <h2 id="wizard-title" className="text-3xl font-bold mb-2">Plan Your Perfect Getaway</h2>
           <p className="text-white/95">Tell us your preferences and we'll create the ideal itinerary</p>
 
@@ -136,20 +136,13 @@ function PreferenceWizard({ onComplete }) {
           </div>
         </div>
 
-        {/* Content */}
-        <div className="flex-1 overflow-y-auto p-6 md:p-8">
+        {/* Content - Fixed height container */}
+        <div className="flex-1 p-6 md:p-8 overflow-y-auto min-h-0">
           {renderStepContent()}
         </div>
 
         {/* Footer */}
-        <div className="bg-background p-6 border-t-2 border-neutral-light">
-          {!isStepValid() && (
-            <p className="text-sm text-error font-medium mb-3 flex items-center gap-2" role="alert">
-              <span aria-hidden="true">⚠️</span>
-              {getErrorMessage()}
-            </p>
-          )}
-
+        <div className="bg-background p-6 border-t-2 border-neutral-light flex-shrink-0 rounded-b-2xl">
           <div className="flex justify-between items-center">
             <button
               onClick={goToPreviousStep}

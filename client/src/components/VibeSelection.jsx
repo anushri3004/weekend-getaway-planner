@@ -31,22 +31,22 @@ function VibeSelection({ data, updateData }) {
   ]
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-3">
       <div className="text-center">
-        <h3 className="text-2xl font-bold text-primary mb-2">
+        <h3 className="text-xl font-bold text-primary mb-1">
           What's your ideal getaway vibe?
         </h3>
-        <p className="text-secondary">
+        <p className="text-sm text-secondary">
           Choose the atmosphere that speaks to you
         </p>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-3 max-w-3xl mx-auto">
         {vibes.map((vibe) => (
           <button
             key={vibe.id}
             onClick={() => updateData('selectedVibe', vibe.id)}
-            className={`p-6 rounded-xl border-2 transition-all duration-300 focus:outline-none focus:ring-focus focus:ring-primary focus:ring-offset-focus ${
+            className={`p-4 rounded-xl border-2 transition-all duration-300 focus:outline-none focus:ring-focus focus:ring-primary focus:ring-offset-focus ${
               data.selectedVibe === vibe.id
                 ? 'border-primary shadow-lg scale-105'
                 : 'border-neutral-light hover:border-primary hover:shadow-md'
@@ -54,13 +54,13 @@ function VibeSelection({ data, updateData }) {
             aria-label={`Select ${vibe.title}: ${vibe.description}`}
             aria-pressed={data.selectedVibe === vibe.id}
           >
-            <div className={`bg-gradient-to-br ${vibe.gradient} w-16 h-16 rounded-full flex items-center justify-center text-4xl mb-4 mx-auto`}>
+            <div className={`bg-gradient-to-br ${vibe.gradient} w-12 h-12 rounded-full flex items-center justify-center text-2xl mb-2 mx-auto`}>
               <span role="img" aria-label={vibe.title}>{vibe.emoji}</span>
             </div>
-            <h4 className="text-xl font-semibold text-primary mb-2">
+            <h4 className="text-lg font-semibold text-primary mb-1">
               {vibe.title}
             </h4>
-            <p className="text-sm text-secondary">
+            <p className="text-xs text-secondary">
               {vibe.description}
             </p>
           </button>

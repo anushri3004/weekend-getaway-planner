@@ -173,55 +173,39 @@ export async function createDetailedItineraryChain(userMessage, destinationName)
   // Create enhanced query for better RAG retrieval
   const enhancedQuery = `${userMessage} ${destinationName} complete itinerary romantic couples`;
 
-  // Prompt template for detailed itinerary
-  const DETAILED_PROMPT_TEMPLATE = `${SYSTEM_PROMPT}
+  // Optimized prompt template - reduced token count
+  const DETAILED_PROMPT_TEMPLATE = `You are creating a weekend itinerary for ${destinationName}.
 
-CONTEXT FROM DESTINATION DATABASE:
+DESTINATION INFO:
 {context}
 
-USER QUERY:
-{query}
+USER REQUEST: {query}
 
-The user has selected **${destinationName}** as their destination.
+Create a concise, actionable itinerary with:
 
-Create a COMPLETE detailed itinerary for ${destinationName}. Include:
+## ${destinationName} - Weekend Itinerary
 
-1. **Destination Introduction & Why It's Perfect**
-   - Brief intro to ${destinationName}
-   - Why it matches their preferences
+**Why Visit:** 1-2 sentence summary
 
-2. **Complete 2-3 Day Itinerary**
-   Format the itinerary as a markdown table with columns: Day | Time | Activity | Details | Cost
+**2-Day Plan:**
+| Day | Time | Activity | Details | Cost |
+|-----|------|----------|---------|------|
+[Fill 6-8 key activities across 2 days]
 
-   Example:
-   | Day | Time | Activity | Details | Cost |
-   |-----|------|----------|---------|------|
-   | Day 1 | 8:00 AM | Breakfast | Café ABC - Continental breakfast | ₹500 |
-   | Day 1 | 10:00 AM | Beach Visit | Relax at XYZ Beach, water sports | ₹1,000 |
+**Budget Breakdown:**
+| Category | Details | Cost |
+|----------|---------|------|
+| Transport | | ₹X |
+| Stay | | ₹Y |
+| Food | | ₹Z |
+| Activities | | ₹A |
+| **Total** | | **₹XYZ** |
 
-3. **Budget Breakdown**
-   Format as a markdown table:
-   | Category | Details | Cost |
-   |----------|---------|------|
-   | Transport | Round trip from departure city | ₹X |
-   | Accommodation | 2-3 nights at Hotel ABC | ₹Y |
-   | Food | All meals | ₹Z |
-   | Activities | Entry fees, sports | ₹A |
-   | Miscellaneous | Shopping, tips | ₹B |
-   | **Total** | | **₹XYZ** |
+**Hidden Gems:** List 3 romantic spots
 
-4. **Hidden Gems & Romantic Spots**
-   - 3-5 offbeat locations
-   - Romantic spots for couples
-   - Local experiences
+**Tips:** Best time, what to pack (1-2 sentences)
 
-5. **Practical Tips**
-   - Best time to visit
-   - What to pack
-   - Booking tips
-   - Local customs
-
-Make it personal, specific, and actionable! Use markdown formatting for better readability.`;
+Keep it brief, specific, and romantic for couples. Use actual names and prices from context.`;
 
   const prompt = PromptTemplate.fromTemplate(DETAILED_PROMPT_TEMPLATE);
 
@@ -263,28 +247,32 @@ export async function createContextualChatChain(userMessage, context) {
   const relevantDocs = await searchDestinations(searchQuery, 3);
   const contextInfo = relevantDocs.map(doc => doc.pageContent).join("\n\n");
 
-  const promptTemplate = PromptTemplate.fromTemplate(`
-    ${SYSTEM_PROMPT}
+  // Use template with input variables
+  const promptTemplate = new PromptTemplate({
+    template: `You are a helpful travel planning assistant for an AI-powered weekend getaway planner for couples in India.
 
-    CONTEXT:
-    - User is planning a trip to: ${selectedDestination}
-    - Their preferences: ${JSON.stringify(userPreferences || {{}})}
-    - They have already seen the detailed itinerary
+CONTEXT:
+- User is planning a trip to: {destination}
+- Their preferences: {preferences}
+- They have already seen the detailed itinerary for {destination}
 
-    Relevant information about ${selectedDestination}:
-    {context}
+Relevant information about {destination}:
+{context}
 
-    User's question: {question}
+User's question: {question}
 
-    Provide a helpful, specific answer about ${selectedDestination}.
-    Be conversational and reference their itinerary when relevant.
-    If they ask about modifications, explain how to adjust the itinerary.
-    Keep your answer concise but informative.
-  `);
+Provide a helpful, specific answer about {destination}.
+Be conversational and reference their itinerary when relevant.
+If they ask about modifications, explain how to adjust the itinerary.
+Keep your answer concise but informative.`,
+    inputVariables: ["destination", "preferences", "context", "question"]
+  });
 
   const chain = promptTemplate.pipe(getLLM()).pipe(new StringOutputParser());
 
   const result = await chain.invoke({
+    destination: selectedDestination,
+    preferences: JSON.stringify(userPreferences || {}),
     context: contextInfo,
     question: userMessage
   });

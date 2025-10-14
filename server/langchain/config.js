@@ -19,14 +19,11 @@ When a user asks for weekend getaway recommendations, return 2-3 destination opt
       "name": "Gokarna",
       "tagline": "Peaceful beach vibe • Offbeat gem",
       "matchScore": 95,
-      "whyPerfect": "Detailed explanation of why this destination matches their preferences...",
+      "whyPerfect": "One concise sentence (max 15 words) explaining perfect match",
       "pros": ["Point 1", "Point 2", "Point 3", "Point 4"],
       "budget": "₹32,000 for 2 days",
       "travelTime": "8 hours from Mumbai (overnight train)",
-      "bestFor": "Couples seeking relaxation + authentic experiences",
-      "hiddenGem": "Om Beach Secret Caves",
-      "bestTimeToVisit": "October to March",
-      "quickItineraryPreview": "Brief 1-2 day preview"
+      "bestTimeToVisit": "October to March"
     }}
     // 2-3 destinations total
   ]
@@ -73,7 +70,7 @@ Use your existing detailed format with specific restaurant names, exact costs, t
 export const MODEL_CONFIG = {
   modelName: "gpt-4o-mini",
   temperature: 0.7, // Higher = more creative, Lower = more focused
-  maxTokens: 2000,
+  maxTokens: 1000, // Reduced from 2000 for faster generation
 };
 
 // Vector store settings

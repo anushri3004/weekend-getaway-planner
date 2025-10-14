@@ -1,4 +1,4 @@
-import { DollarSign } from 'lucide-react'
+import { Wallet } from 'lucide-react'
 
 function BudgetSlider({ data, updateData }) {
   const formatCurrency = (amount) => {
@@ -18,7 +18,7 @@ function BudgetSlider({ data, updateData }) {
 
       <div className="max-w-2xl mx-auto">
         <div className="bg-gradient-to-r from-primary to-secondary p-8 rounded-2xl text-white text-center mb-6">
-          <DollarSign className="mx-auto mb-2" size={40} aria-hidden="true" />
+          <Wallet className="mx-auto mb-2" size={40} aria-hidden="true" />
           <div className="text-5xl font-bold mb-2">
             {formatCurrency(data.budget)}
           </div>
@@ -27,26 +27,26 @@ function BudgetSlider({ data, updateData }) {
 
         <div className="px-4">
           <label htmlFor="budget-slider" className="sr-only">
-            Budget amount in rupees, range from 20,000 to 50,000
+            Budget amount in rupees, range from 20,000 to 1,00,000
           </label>
           <input
             id="budget-slider"
             type="range"
             min="20000"
-            max="50000"
-            step="1000"
+            max="100000"
+            step="5000"
             value={data.budget}
             onChange={(e) => updateData('budget', parseInt(e.target.value))}
             className="w-full h-3 bg-neutral-light rounded-lg appearance-none cursor-pointer slider focus:outline-none focus:ring-focus focus:ring-primary focus:ring-offset-focus"
             aria-valuemin="20000"
-            aria-valuemax="50000"
+            aria-valuemax="100000"
             aria-valuenow={data.budget}
             aria-valuetext={formatCurrency(data.budget)}
           />
 
           <div className="flex justify-between text-sm text-secondary mt-2">
             <span>₹20,000</span>
-            <span>₹50,000</span>
+            <span>₹1,00,000</span>
           </div>
         </div>
 

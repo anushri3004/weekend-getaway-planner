@@ -214,10 +214,25 @@ function ChatInterface() {
 
         {/* Loading State */}
         {isLoading && (
-          <div className="flex items-center justify-center p-12">
+          <div className="flex items-center justify-center p-12 min-h-screen">
             <div className="text-center">
-              <div className="inline-block animate-spin rounded-full h-12 w-12 border-4 border-primary border-t-transparent mb-4"></div>
-              <p className="text-text-secondary font-medium">Finding your perfect destinations...</p>
+              <div className="relative">
+                {/* Animated gradient circle */}
+                <div className="inline-block animate-spin rounded-full h-16 w-16 border-4 border-transparent bg-gradient-to-r from-primary via-secondary to-accent mb-6"
+                     style={{
+                       WebkitMask: 'linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)',
+                       WebkitMaskComposite: 'xor',
+                       maskComposite: 'exclude',
+                       padding: '4px'
+                     }}>
+                </div>
+              </div>
+              <p className="text-text-primary text-lg font-semibold mb-2">
+                {viewMode === null ? '🔍 Finding your perfect destinations...' : '✨ Creating your personalized itinerary...'}
+              </p>
+              <p className="text-text-secondary text-sm">
+                {viewMode === null ? 'Analyzing options based on your preferences' : 'Crafting the perfect getaway plan just for you'}
+              </p>
             </div>
           </div>
         )}

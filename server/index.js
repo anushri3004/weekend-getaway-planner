@@ -66,7 +66,7 @@ app.post("/api/chat", async (req, res) => {
 
     console.log("📨 Received message:", message);
     console.log("📋 User preferences:", userPreferences);
-    console.log("🔄 Context:", context);
+    console.log("🔄 Raw Context:", JSON.stringify(context, null, 2));
 
     // Build context object for the chain
     const fullContext = {
@@ -74,6 +74,8 @@ app.post("/api/chat", async (req, res) => {
       selectedDestination: context?.selectedDestination || null,
       hasSeenItinerary: context?.hasSeenItinerary || false
     };
+
+    console.log("✅ Full Context Built:", JSON.stringify(fullContext, null, 2));
 
     // Use the router to handle the query (returns comparison, detailed, or chat mode)
     const response = await handleChatQuery(message, fullContext);
