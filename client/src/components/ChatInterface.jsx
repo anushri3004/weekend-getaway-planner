@@ -245,6 +245,7 @@ function ChatInterface() {
             onChatMessage={handleDestinationChatMessage}
             chatMessages={destinationChatMessages}
             isLoadingChat={isLoadingChat}
+            userPreferences={userPreferences}
           />
         )}
 
